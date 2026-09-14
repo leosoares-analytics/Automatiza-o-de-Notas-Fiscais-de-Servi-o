@@ -1,0 +1,829 @@
+{
+  "name": "Notas Fiscais — Outlook para SQL Server export",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "attachment_0",
+        "options": {
+          "joinPages": true
+        }
+      },
+      "id": "b55f755a-c5ee-43d7-8add-229a9490dc0a",
+      "name": "Extrair Texto do PDF",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.text }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "data_emissao",
+              "description": "dd/mm/yyyy",
+              "required": true
+            },
+            {
+              "name": "valor",
+              "type": "number",
+              "description": "Valor total da nota fiscal",
+              "required": true
+            },
+            {
+              "name": "numero_protocolo",
+              "type": "number",
+              "description": "Número de protocolo da nota fiscal"
+            },
+            {
+              "name": "empresa_destinataria",
+              "description": "Nome da empresa para a qual a nota é endereçada (destinatário)"
+            },
+            {
+              "name": "fornecedor",
+              "description": "Nome do fornecedor / emitente da nota fiscal"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "55c5959c-9272-484d-9785-b072d9ecb138",
+      "name": "Extrair Dados (PDF)",
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "data_emissao",
+              "type": "string",
+              "value": "={{ $json.output.data_emissao }}"
+            },
+            {
+              "id": "a2",
+              "name": "valor",
+              "type": "number",
+              "value": "={{ $json.output.valor }}"
+            },
+            {
+              "id": "a3",
+              "name": "numero_protocolo",
+              "type": "string",
+              "value": "={{ $json.output.numero_protocolo }}"
+            },
+            {
+              "id": "a4",
+              "name": "empresa_destinataria",
+              "type": "string",
+              "value": "={{ $json.output.empresa_destinataria }}"
+            },
+            {
+              "id": "a5",
+              "name": "fornecedor",
+              "type": "string",
+              "value": "={{ $json.output.fornecedor }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6280a013-23ca-4e59-9cd3-13b8cd2a32b7",
+      "name": "Mapear Campos (PDF)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1248,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "xml",
+        "binaryPropertyName": "=attachment_0",
+        "options": {}
+      },
+      "id": "f78dbe7b-60b0-4146-9145-fb8a4fd5a7fa",
+      "name": "Ler XML",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "text": "={{ JSON.stringify($json.data) }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "data_emissao",
+              "type": "date",
+              "description": "Data de emissão da nota fiscal",
+              "required": true
+            },
+            {
+              "name": "valor",
+              "type": "number",
+              "description": "Valor total da nota fiscal",
+              "required": true
+            },
+            {
+              "name": "numero_protocolo",
+              "description": "Número de protocolo da nota fiscal"
+            },
+            {
+              "name": "empresa_destinataria",
+              "description": "Nome da empresa para a qual a nota é endereçada (destinatário)"
+            },
+            {
+              "name": "fornecedor",
+              "description": "Nome do fornecedor / emitente da nota fiscal"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b113baad-a07d-4f26-88db-7591852a9ca6",
+      "name": "Extrair Dados (XML)",
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "data_emissao",
+              "type": "string",
+              "value": "={{ $json.output.data_emissao }}"
+            },
+            {
+              "id": "a2",
+              "name": "valor",
+              "type": "number",
+              "value": "={{ $json.output.valor }}"
+            },
+            {
+              "id": "a3",
+              "name": "numero_protocolo",
+              "type": "string",
+              "value": "={{ $json.output.numero_protocolo }}"
+            },
+            {
+              "id": "a4",
+              "name": "empresa_destinataria",
+              "type": "string",
+              "value": "={{ $json.output.empresa_destinataria }}"
+            },
+            {
+              "id": "a5",
+              "name": "fornecedor",
+              "type": "string",
+              "value": "={{ $json.output.fornecedor }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9434db0e-abe8-4d33-9a32-3844ff6b4e36",
+      "name": "Mapear Campos (XML)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1248,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "03b37c9d-c924-4d17-a2d1-6268074bc180",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "NF",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "bced7e48-d768-4ee9-a9ab-4c5db14757aa",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "nf",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        176,
+        288
+      ],
+      "id": "a8cdd375-1a69-427a-a54a-4540fef07b7f",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        208
+      ],
+      "id": "e4e39e90-2869-49b2-af36-4acefe8c7d7b",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        688
+      ],
+      "id": "72d2c851-a9f6-44f7-9954-be4893fae2c5",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9bfd2319-1bc7-4ef2-bf2d-2be20b7f4496",
+              "name": "data_emissao",
+              "value": "={{ $json.data_emissao.split('/').reverse().join('-') }}",
+              "type": "string"
+            },
+            {
+              "id": "e10a6692-5672-4d8e-a212-6ec6e732eef7",
+              "name": "valor",
+              "value": "={{ $json.valor }}",
+              "type": "number"
+            },
+            {
+              "id": "eb23f8bf-5a28-44ae-905d-36ae82ae5eec",
+              "name": "numero_protocolo",
+              "value": "={{ $json.numero_protocolo }}",
+              "type": "string"
+            },
+            {
+              "id": "9caa133e-b79b-4066-873d-8851788ea5e1",
+              "name": "empresa_destinataria",
+              "value": "={{ $json.empresa_destinataria }}",
+              "type": "string"
+            },
+            {
+              "id": "abdd44ba-7163-4ed8-b9ff-a76d564c8f85",
+              "name": "fornecedor",
+              "value": "={{ $json.fornecedor }}",
+              "type": "string"
+            },
+            {
+              "id": "1120f1c3-ff4a-4baf-a0a1-fdd25113a870",
+              "name": "status_gerente",
+              "value": "Pendente",
+              "type": "string"
+            },
+            {
+              "id": "a28dc1ed-b65f-4a3d-b8c1-62251a0b0138",
+              "name": "status_financeiro",
+              "value": "Pendente",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1520,
+        288
+      ],
+      "id": "7635af24-4b74-4d0d-a4dc-deb56b7bd5fa",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "table": {
+          "__rl": true,
+          "value": "NFs",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data_emissao",
+              "displayName": "data_emissao",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valor",
+              "displayName": "valor",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "numero_protocolo",
+              "displayName": "numero_protocolo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "empresa_destinataria",
+              "displayName": "empresa_destinataria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fornecedor",
+              "displayName": "fornecedor",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status_gerente",
+              "displayName": "status_gerente",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status_financeiro",
+              "displayName": "status_financeiro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_gerente",
+              "displayName": "data_gerente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_financeiro",
+              "displayName": "data_financeiro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_vencimento",
+              "displayName": "data_vencimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        1760,
+        288
+      ],
+      "id": "13928d09-89af-499d-87e7-db344851aad7",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "gXGo0H5GhLwITTNX",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $binary.attachment_0.fileExtension }}",
+                    "rightValue": "pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7602ecd1-062c-411f-8457-2c8c32d52bff"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ee9554db-9f2c-48e5-8bbe-cf11d603c00c",
+                    "leftValue": "={{ $binary.attachment_0.fileExtension }}",
+                    "rightValue": "xml",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b61548d0-ffb6-4a9d-8ef0-3da214d08649",
+                    "leftValue": "={{ $json.hasAttachments }}",
+                    "rightValue": false,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        272
+      ],
+      "id": "01415fce-3bcc-493f-8833-215566179abd",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "toRecipients": "leonardo_impact@outlook.com",
+        "subject": "[Error] - Processo de nota fiscal com erro",
+        "bodyContent": "=O e-mail a seguir é classificado como nota fiscal, mas não foi encontrado nenhum anexo.\n\n{{ $json.webLink }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        656,
+        832
+      ],
+      "id": "b27eab87-0ac2-4b5c-8915-d104373a567b",
+      "name": "Send a message",
+      "webhookId": "12aee451-dfea-4033-9e79-6b004f99bc3b",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "LsJ9Zj6gGYKbMoSy",
+          "name": "Microsoft Outlook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "output": "fields",
+        "fields": [
+          "body",
+          "subject",
+          "hasAttachments",
+          "webLink"
+        ],
+        "filtersUI": {
+          "values": {
+            "filters": {
+              "readStatus": "unread"
+            }
+          }
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        288
+      ],
+      "id": "9cb0a49d-1a05-43f2-8dcd-d74cff6399a0",
+      "name": "Get many messages",
+      "webhookId": "57b9a77c-1320-4911-aab5-673c0fa07754",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "LsJ9Zj6gGYKbMoSy",
+          "name": "Microsoft Outlook account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        288
+      ],
+      "id": "ae8a81c2-72dc-491e-becb-02899cc79dc9",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Extrair Texto do PDF": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Mapear Campos (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapear Campos (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler XML": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados (XML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados (XML)": {
+      "main": [
+        [
+          {
+            "node": "Mapear Campos (XML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapear Campos (XML)": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extrair Dados (PDF)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extrair Dados (XML)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Extrair Texto do PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ler XML",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b0c627c9-32c6-4a65-86c3-7f5cd7dd2e0d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e13bdd8335c14c9f6ec392a2b9e1a2d358ae16deef28a0edb4bd35ac172ec49d"
+  },
+  "nodeGroups": [],
+  "id": "Cr0T9Q4vSIHQtesc",
+  "tags": []
+}

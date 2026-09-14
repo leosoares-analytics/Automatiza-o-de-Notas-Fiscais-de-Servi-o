@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NFSeFicticia versao="1.0"><Aviso>DOCUMENTO FICTÍCIO — SEM VALIDADE FISCAL</Aviso><Numero>001</Numero><DataEmissao>2026-08-04</DataEmissao><Tomador><RazaoSocial>Leon's Custom Fake</RazaoSocial><CNPJ>00.000.000/0001-00</CNPJ></Tomador><Fornecedor><RazaoSocial>Fornecedor Fictício 01 Fake</RazaoSocial><CNPJ>11.111.111/0001-11</CNPJ></Fornecedor><Servico><Descricao>Consultoria em processos e análise de dados</Descricao><Valor>587.00</Valor></Servico><ValidadeFiscal>false</ValidadeFiscal></NFSeFicticia>
